@@ -1,7 +1,7 @@
 {
   "name": "moa-middleware-rate-cache",
   "version": "1.0.0",
-  "description": "",
+  "description": "moa-middleware-rate-cache is an expressjs-based middleware!",
   "main": "index.js",
   "scripts": {
     "start": "npm publish .",
