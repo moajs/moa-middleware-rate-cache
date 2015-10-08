@@ -2,6 +2,8 @@
 
 moa-middleware-rate-cache is an expressjs-based middleware!
 
+[![npm version](https://badge.fury.io/js/moa-middleware-rate-cache.svg)](http://badge.fury.io/js/moa-middleware-rate-cache)
+
 ## Install
 
 ```
