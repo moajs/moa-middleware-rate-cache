@@ -1,24 +1,30 @@
 # rate-cache
 
+moa-middleware-rate-cache is an expressjs-based middleware!
 
-is an expressjs middleware!
-
+## Install
 
 ```
-npm install --save rate-cache
+$ npm install --save moa-middleware-rate-cache
 ```
 
 ## Examples
 
 ```
-var redis = new ioredis();
-var rate_cache = require('rate-cache')(redis, 'xxxxx_key', 40);
-
+var Redis = require('ioredis');
+var redis = new Redis();
+var rate_cache = require('moa-middleware-rate-cache')(redis, 'xxxxx_key', 40);
 
 app.get('/', rate_cache, function (req, res) {
+  var cache = new rate_cache();
+  cache.mark_key_exist();
   
-  rate_cache.mark_key_exist();
-  
-  res.send('Hello World!');
+  res.status(200).json({
+    data:{},
+    status:{
+      code: 0,
+      msg : 'success!'
+    }
+  });
 });
 ```

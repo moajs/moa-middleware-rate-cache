@@ -1,17 +1,18 @@
 {
-  "name": "rate-cache",
+  "name": "moa-middleware-rate-cache",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm publish .",
+    "test" : "node app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moajs/rate-cache.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "i5ting",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/moajs/rate-cache/issues"
   },
