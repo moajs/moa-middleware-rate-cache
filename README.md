@@ -12,6 +12,8 @@ $ npm install --save moa-middleware-rate-cache
 
 ## Examples
 
+由于rate-cache依赖redis，所以推荐luin写的[ioredis](https://github.com/luin/ioredis)
+
 ```
 var Redis = require('ioredis');
 var redis = new Redis();
