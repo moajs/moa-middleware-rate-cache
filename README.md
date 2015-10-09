@@ -114,3 +114,5 @@ app.get('/', rate_cache_config, rate_cache, function (req, res) {
   });
 });
 ```
+
+redis内存用量查看： https://github.com/sripathikrishnan/redis-rdb-tools
