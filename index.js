@@ -6,15 +6,44 @@
 var debug = require('debug')('rate-cache');
 
 module.exports = function (redis, uni_key, timeout) {
+  var redis, uni_key, timeout;
+  
+  if (arguments.length >= 3) {
+    redis = arguments[0];
+    uni_key = arguments[1];
+    timeout = arguments[2];
+  }else if (arguments.length == 2) {
+    redis = arguments[0];
+    timeout = arguments[1];
+    uni_key = req.rate-cache_key;
+  }else if (arguments.length == 1) {
+    redis = arguments[0];
+    timeout = req.rate-cache_timeout;
+    uni_key = req.rate-cache_key;
+  }else{
+    redis = req.redis;
+    timeout = req.rate-cache_timeout;
+    uni_key = req.rate-cache_key;
+  }
+  
   this.uni_key = uni_key;
   this.timeout = timeout;
   this.redis   = redis;
+  
+  if (this.uni_key || this.timeout || this.redis) {
+    console.log('Moa-middleware-rate-cache Usages!')
+    console.log("var rate_cache = require('moa-middleware-rate-cache')(redis, 'xxxxx_key', 40);")
+    console.log("var rate_cache = require('moa-middleware-rate-cache')(redis, 40);")
+    console.log("var rate_cache = require('moa-middleware-rate-cache')(redis);")
+    return;
+  }
   
   var _this = this;
   
   function log(key, timeout){
     console.log('【LOG】: key=' + key + ' - timeout=' + timeout)
   }
+  
   var middleware = function (req, res, next) {
     
     log(_this.uni_key, _this.timeout);
