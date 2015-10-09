@@ -63,6 +63,34 @@ var rate_cache = require('moa-middleware-rate-cache')();
 
 - 无
 
+## result message
+
+- req.rate_cache_msg_not_exist
+
+```
+{
+	data: {},
+	status: {
+	  code: -1,
+	  msg: '生成货单编号失败'
+	}
+}
+```
+
+- req.rate_cache_msg_exist
+
+```
+{
+	data: {},
+	status: {
+	  code: -2,
+	  msg: '您的订单已经在处理，不要急嘛~'
+	}
+}
+```
+
+如果想重置就放到中间件里修改即可。
+
 ## Examples
 
 由于rate-cache依赖redis，所以推荐luin写的[ioredis](https://github.com/luin/ioredis)

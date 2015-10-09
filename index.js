@@ -48,6 +48,30 @@ module.exports = function (redis, uni_key, timeout) {
     
     log(_this.uni_key, _this.timeout);
     
+    var msg_not_exist = {
+			data: {},
+			status: {
+			  code: -1,
+			  msg: '生成货单编号失败'
+			}
+		}
+    
+    var msg_exist = {
+			data: {},
+			status: {
+			  code: -2,
+			  msg: '您的订单已经在处理，不要急嘛~'
+			}
+		}
+    
+    if (req.rate_cache_msg_not_exist) {
+      not_exist = req.rate_cache_msg_not_exist;
+    }
+    
+    if (req.rate_cache_msg_exist) {
+      not_exist = req.rate_cache_msg_exist;
+    }
+    
     this.uni_key = _this.uni_key;
     this.timeout = _this.timeout;
     this.redis   = _this.redis;
@@ -56,22 +80,10 @@ module.exports = function (redis, uni_key, timeout) {
   		if(err) {
         console.log(_this.uni_key + ' 不存在')
         console.log('get ' + _this.uni_key +' expire error');
-  			return res.status(200).json({
-  				data: {},
-  				status: {
-  				  code: -1,
-  				  msg: '生成货单编号失败'
-  				}
-  			});
+  			return res.status(200).json(msg_not_exist);
   		}else if(value == _this.uni_key ){
         console.log('get ' + _this.uni_key +' expire exist');
-  			return res.status(200).json({
-  				data: {},
-  				status: {
-  				  code: -2,
-  				  msg: '您的订单已经在处理，不要急嘛~'
-  				}
-  			});
+  			return res.status(200).json(msg_exist);
       }else{
         console.log('get ' + _this.uni_key +' expire not exist, 保存到数据库里');
         if(value == null || value == 'null' || value == undefined){
