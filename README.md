@@ -15,7 +15,8 @@ $ npm install --save moa-middleware-rate-cache
 way 1：
 
 ```
-var rate_cache = require('moa-middleware-rate-cache')(redis, 'xxxxx_key', 40);
+var rate_cache = require('moa-middleware-rate-cache');
+var r = new rate_cache(redis, 'xxxxx_key', 40);
 ```
 
 参数
@@ -27,45 +28,20 @@ var rate_cache = require('moa-middleware-rate-cache')(redis, 'xxxxx_key', 40);
 way 2：
 
 ```
-req.rate-cache_key = 'xxxxx_key';
-var rate_cache = require('moa-middleware-rate-cache')(redis, 40);
+var rate_cache = require('moa-middleware-rate-cache');
+var r = new rate_cache(redis, 'xxxxx_key2222');
 ```
 
 参数
 
 - redis, 传入redis对象
-- 40（秒）缓存时间
+- 'xxxxx_key', 在redis里缓存的key
 
-way 3：
-
-```
-req.rate-cache_timeout = 30;
-req.rate-cache_key = 'xxxxx_key';
-var rate_cache = require('moa-middleware-rate-cache')(redis);
-```
-
-参数
-
-- redis, 传入redis对象
-
-way 4：
-
-```
-var Redis = require('ioredis');
-
-req.redis = new Redis();
-req.rate-cache_timeout = 30;
-req.rate-cache_key = 'xxxxx_key';
-var rate_cache = require('moa-middleware-rate-cache')();
-```
-
-参数
-
-- 无
-
+默认缓存时间是30秒
+ 
 ## result message
 
-- req.rate_cache_msg_not_exist
+- rate_cache.msg_not_exist
 
 ```
 {
@@ -77,7 +53,7 @@ var rate_cache = require('moa-middleware-rate-cache')();
 }
 ```
 
-- req.rate_cache_msg_exist
+- rate_cache.msg_exist
 
 ```
 {
@@ -89,7 +65,12 @@ var rate_cache = require('moa-middleware-rate-cache')();
 }
 ```
 
-如果想重置就放到中间件里修改即可。
+如果想重置就直接修改rate_cache即可。
+
+## Extra API
+
+- rate_cache.set_uni_key(new_key)
+- rate_cache.mark_key_exist()
 
 ## Examples
 
@@ -98,11 +79,11 @@ var rate_cache = require('moa-middleware-rate-cache')();
 ```
 var Redis = require('ioredis');
 var redis = new Redis();
-var rate_cache = require('moa-middleware-rate-cache')(redis, 'xxxxx_key', 40);
+var rate_cache = require('moa-middleware-rate-cache');
+var r = new rate_cache(redis, 'xxxxx_key', 40);
 
-app.get('/', rate_cache, function (req, res) {
-  var cache = new rate_cache();
-  cache.mark_key_exist();
+app.get('/', r.middleware, function (req, res) {
+  r.mark_key_exist();
   
   res.status(200).json({
     data:{},
@@ -112,6 +93,7 @@ app.get('/', rate_cache, function (req, res) {
     }
   });
 });
+
 ```
 
 上面是最典型的场景，xxxxx_key是针对某一个表或者某一个操作的key，还有一种更为苛刻的，比如根据表单内容或者某个用户，使用中间件配置即可
@@ -120,18 +102,18 @@ app.get('/', rate_cache, function (req, res) {
 ```
 var Redis = require('ioredis');
 var redis = new Redis();
-var rate_cache = require('moa-middleware-rate-cache')(redis);
+var rate_cache = require('moa-middleware-rate-cache');
+var r2 = new rate_cache(redis,'xxxxx_key111');
 
 var rate_cache_config = function(req, res, next){
   var user_id = req.current_user._id;
-  req.rate-cache_key = user_id + 'xxxxx_key';
-  req.rate-cache_timeout = 40;
+  rate_cache.uni_key = user_id + "_create_delivery"
+  
   next();
 }
 
-app.get('/', rate_cache_config, rate_cache, function (req, res) {
-  var cache = new rate_cache();
-  cache.mark_key_exist();
+app.get('/', rate_cache_config, r2.middleware, function (req, res) {
+  r2.mark_key_exist();
   
   res.status(200).json({
     data:{},

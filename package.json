@@ -1,11 +1,11 @@
 {
   "name": "moa-middleware-rate-cache",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "moa-middleware-rate-cache is an expressjs-based middleware!",
   "main": "index.js",
   "scripts": {
     "start": "npm publish .",
-    "test" : "node app.js"
+    "test": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "debug": "^2.2.0",
     "express": "^4.13.3",
-    "ioredis": "^1.9.1"
+    "ioredis": "^1.9.1",
+    "open": "0.0.5"
   }
 }
