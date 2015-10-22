@@ -107,7 +107,7 @@ var r2 = new rate_cache(redis,'xxxxx_key111');
 
 var rate_cache_config = function(req, res, next){
   var user_id = req.current_user._id;
-  rate_cache.uni_key = user_id + "_create_delivery"
+  r2.uni_key = user_id + "_create_delivery"
   
   next();
 }
